@@ -46,3 +46,22 @@ steps:
     tar xvfz connect.tar.gz
     ls -ltrSha
 ```
+
+# workflow-dispatch-webhook
+
+Note that it's also possible to trigger a workflow prorgammatically using curl, via the REST API and to trigger workflow_dispatch events. The advantages are as follows:
+
+- We can trigger individual workflows.
+- We can target workflows to run on specific branches with specific workflow files on that branch.
+
+The below command triggers a workflow to run in second.yml and on the `wd-branch-demo` branch:
+
+```
+$ TARGET_BRANCH=wd-branch-demo curl -L https://api.github.com/repos/jamesmortensen/repository-dispatch-demo/actions/workflows/second.yml/dispatches \
+    -X POST \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    --data '{"ref":"'"$TARGET_BRANCH"'","inputs":{"version":"1.2"}}'
+```
+
